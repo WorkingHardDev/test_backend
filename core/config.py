@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     exclude_jwt_paths: set[tuple[str, str]] = {
         ("/docs", "GET"),
         ("/openapi.json", "GET"),
-        ("/user", "POST"),
+        ("/users", "POST"),
         ("/jwt/login", "POST"),
         ("/jwt/logout", "POST"),
     }
