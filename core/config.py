@@ -13,8 +13,8 @@ class AuthJWT(BaseModel):
 
 class DbSettings(BaseModel):
     DB_USER: str = os.getenv("MYSQL_USER", "root")
-    DB_PASSWORD: str = os.getenv("MYSQL_PASSWORD", "")
-    DB_HOST: str = os.getenv("MYSQL_HOST", "127.0.0.1")
+    DB_PASSWORD: str = os.getenv("MYSQL_PASSWORD", "root")
+    DB_HOST: str = os.getenv("MYSQL_HOST", "db")
     DB_PORT: str = os.getenv("MYSQL_PORT", "3306")
     DB_NAME: str = os.getenv("MYSQL_DATABASE", "mysql")
     url: str = f'mysql+aiomysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     exclude_jwt_paths: set[tuple[str, str]] = {
         ("/docs", "GET"),
         ("/openapi.json", "GET"),
-        ("/user", "POST"),
+        ("/users", "POST"),
         ("/jwt/login", "POST"),
         ("/jwt/logout", "POST"),
     }

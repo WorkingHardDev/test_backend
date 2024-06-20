@@ -1,7 +1,8 @@
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import ForeignKey, Integer, Text, delete, select
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-
+from fastapi import HTTPException
 from db.decorators.db_session import db_session
 from db.mysql import Base
 from routers.post.schemas import PostSchema
@@ -21,13 +22,21 @@ class PostStore:
     '''
     Store class for DB calls to posts table
     '''
+
     @staticmethod
     @db_session
     async def create_post(session, data: PostSchema):
-        post = Post(**data)
-        session.add(post)
-        await session.commit()
-        return post
+        try:
+            post = Post(**data)
+            session.add(post)
+            await session.commit()
+            return post
+        except IntegrityError as e:
+
+            if "Cannot add or update a child row" in str(e):
+                raise HTTPException(status_code=400, detail="Error while adding post")
+            raise e
+
 
     @staticmethod
     @db_session
@@ -43,11 +52,9 @@ class PostStore:
         posts = [row[0] for row in result.all()]
         return posts
 
-
-
     @staticmethod
     @db_session
     async def delete_post(session, post_id: int):
         post = delete(Post).where(Post.id == post_id)
         await session.execute(post)
-
+        await session.commit()

@@ -36,7 +36,6 @@ class UserStore:
                 return user
         except IntegrityError as e:
             await session.rollback()
-            print(str(e))
             # Inspecting the exception to check for a unique constraint
             if "Duplicate entry" in str(e):
                 # Determine which field caused the unique constraint error

@@ -36,6 +36,7 @@ async def create_post(
 ):
     post = post_income.model_dump()
     post = await PostStore.create_post(data=post)
+    cache.clear()
     return post
 
 
@@ -56,4 +57,5 @@ async def get_posts():
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_post(post_id: int):
+    cache.clear()
     return await PostStore.delete_post(post_id=post_id)
