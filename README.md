@@ -32,4 +32,14 @@ To run the project, use the following command:
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8081 --reload
 
-# or you can use Docker 
+
+## Running the Project with Docker
+To run the project, use the following command:
+
+1. Build docker
+```bash
+docker-compose up --build
+
+2. Open project
+Go to http://localhost:8000
+
